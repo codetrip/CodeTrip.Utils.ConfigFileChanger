@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Files>
+  <File name="test.config">
+    <Property1 xpath="//Parent/Property2" value="intvalue1"/>
+    <Property2 xpath="//Property2/@att" value="intvalue2"/>
+  </File>
+  <File name="test2.config">
+    <Property2 value="intvalue3"/>
+  </File>
+</Files>

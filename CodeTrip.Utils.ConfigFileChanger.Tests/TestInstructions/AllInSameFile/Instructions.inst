@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Files>
+  <File match="test.config">
+    <Property1 dev="&lt;list&gt;
+        &lt;item&gt;172.30.220.133:8080|AMP-APP-T01|true&lt;/item&gt;
+      &lt;/list&gt;" int="intValue" theRest="defaultValue"/>
+    <Property2 theRest="valueForAllEnvironments"/>
+    <NestedProperty2 xpath="//Parent/Property2" dev="devValue"/>
+  </File>
+  <File match="test.config" ancestor-folder="Test">
+    
+  </File>
+  <File match="test2.config">
+    <Property3 dev="$(Replacement1)DevValue"/>
+    <Property3Att xpath="//Property3/@att" dev="devValue" theRest="blah"/>
+  </File>
+</Files>

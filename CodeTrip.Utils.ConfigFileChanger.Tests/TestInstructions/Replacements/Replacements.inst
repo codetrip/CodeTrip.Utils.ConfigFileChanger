@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Replacements match="*.inst">
+  <Replacement1 dev="devReplacedValue" int="intReplacedValue" theRest="defaultValue"/>
+  <Replacement2 dev="$(Replacement1)"/>
+</Replacements>
