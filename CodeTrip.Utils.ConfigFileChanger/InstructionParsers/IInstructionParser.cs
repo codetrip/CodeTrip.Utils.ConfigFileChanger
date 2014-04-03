@@ -67,14 +67,44 @@ namespace CodeTrip.Utils.ConfigFileChanger.InstructionParsers
         }
     }
 
+    public class EnvironmentAttributeComparer : IComparer<EnvironmentAttribute>
+    {
+        public int Compare(EnvironmentAttribute x, EnvironmentAttribute y)
+        {
+            var compareLength = y.EnvironmentMatches.Length.CompareTo(x.EnvironmentMatches.Length);
+            if (compareLength != 0)
+                return compareLength;
+
+            if (x.EnvironmentMatches.Contains("theRest") && !y.EnvironmentMatches.Contains("theRest"))
+                return 1;
+
+            if (!x.EnvironmentMatches.Contains("theRest") && y.EnvironmentMatches.Contains("theRest"))
+                return -1;
+
+            return x.EnvironmentMatches.Select((t, i) => t.CompareTo(y.EnvironmentMatches[i])).FirstOrDefault(compareI => compareI != 0);
+        }
+    }
+
+    public class EnvironmentAttribute 
+    {
+        public EnvironmentAttribute(XmlAttribute xmlAttribute)
+        {
+            EnvironmentMatches = xmlAttribute.Name.Split('.');
+            Value = xmlAttribute.Value;
+        }
+
+        public string[] EnvironmentMatches { get; set; }
+        public string Value { get; set; }
+    }
+
     public class AllEnvironmentsInOneFileXmlParser : XmlParser
     {
-        private readonly string _environment;
+        private readonly string[] _environments;
 
-        public AllEnvironmentsInOneFileXmlParser(string fileMatch, string environment, StringReplacementHistory history)
+        public AllEnvironmentsInOneFileXmlParser(string fileMatch, string[] environments, StringReplacementHistory history)
             : base(fileMatch)
         {
-            _environment = environment;
+            _environments = environments;
             _history = history;
         }
 
@@ -84,31 +114,43 @@ namespace CodeTrip.Utils.ConfigFileChanger.InstructionParsers
         {
             foreach (var replacementNode in replacementsNode.OfType<XmlElement>())
             {
-                foreach (var env in new[] { _environment, "theRest" })
+                var bestMatch = GetMatch(replacementNode);
+
+                if (bestMatch != null)
                 {
-                    if (replacementNode.HasAttribute(env))
-                    {
-                        var instruction = new TextChangeInstruction("$({0})".FormatWith(replacementNode.Name), _history.ReplaceFromHistory(replacementNode.GetAttribute(env)));
-                        _history.AddInstruction(instruction);
-                        yield return instruction;
-                        break;
-                    }
+                    var instruction = new TextChangeInstruction("$({0})".FormatWith(replacementNode.Name),
+                        _history.ReplaceFromHistory(bestMatch.Value));
+                    _history.AddInstruction(instruction);
+                    yield return instruction;
                 }
             }
+        }
+
+        private EnvironmentAttribute GetMatch(XmlElement node)
+        {
+            var envAttrs = node.Attributes.Cast<XmlAttribute>()
+                .Where(a => a.Name != "xpath")
+                .Select(a => new EnvironmentAttribute(a));
+
+            var bestMatch = envAttrs
+                .OrderBy(a => a, new EnvironmentAttributeComparer())
+                .FirstOrDefault(a => a.EnvironmentMatches.All(m => _environments.Contains(m)))
+                            ??
+                            envAttrs.FirstOrDefault(
+                                a => a.EnvironmentMatches.Length == 1 && a.EnvironmentMatches[0] == "theRest");
+
+            return bestMatch;
+
         }
 
         protected override IEnumerable<IChangeInstruction> GetXmlChangeInstructions(XmlElement fileNode)
         {
             foreach (var propertyNode in fileNode.OfType<XmlElement>())
             {
-                foreach (var env in new[] {_environment, "theRest"})
-                {
-                    if (propertyNode.HasAttribute(env))
-                    {
-                        yield return new XmlChangeInstruction(GetXPath(propertyNode), propertyNode.GetAttribute(env));
-                        break;
-                    }
-                }
+                var bestMatch = GetMatch(propertyNode);
+                
+                if (bestMatch != null)
+                    yield return new XmlChangeInstruction(GetXPath(propertyNode), bestMatch.Value);
             }
         }
     }

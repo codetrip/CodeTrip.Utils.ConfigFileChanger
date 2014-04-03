@@ -40,6 +40,24 @@ namespace CodeTrip.Utils.ConfigFileChanger.Tests
             }
         }
 
+        [Test]
+        public void Multi_envs()
+        {
+            var processStartInfo = new ProcessStartInfo("CodeTrip.Utils.ConfigFileChanger.exe",
+                                                        @"/M:Deploy /Env:dev /Env:b /A:+ /Inst:TestInstructions\MultiEnvs /Config:TestConfig /D-");
+
+
+            RunProcess(processStartInfo);
+
+            using (
+                var sr =
+                    new StreamReader(Path.Combine(Environment.CurrentDirectory,
+                        @"TestConfig\test.config")))
+            {
+                Console.WriteLine(sr.ReadToEnd());
+            }
+        }
+
         private void RunProcess(ProcessStartInfo processStartInfo)
         {
             processStartInfo.UseShellExecute = false;

@@ -54,14 +54,17 @@ namespace CodeTrip.Utils.ConfigFileChanger.InstructionLoaders
 
     public class XmlChangeInstruction : ChangeInstruction
     {
-        public XmlChangeInstruction(string xPath, string value)
+        public XmlChangeInstruction(string xPath, string value, string defaultNamespace = null)
         {
             XPath = xPath;
             Value = value;
+            DefaultNamespace = defaultNamespace;
         }
 
         public string XPath { get; set; }
         public string Value { get; set; }
+        public string DefaultNamespace { get; set; }
+
 
         public override string ToString()
         {

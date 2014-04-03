@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using CodeTrip.Utils.ConfigFileChanger.Changers;
 using CodeTrip.Utils.ConfigFileChanger.InstructionLoaders;
 using System.Linq;
 

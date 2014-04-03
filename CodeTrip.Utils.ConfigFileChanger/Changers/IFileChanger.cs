@@ -23,7 +23,7 @@ namespace CodeTrip.Utils.ConfigFileChanger
 
             xmlDocument.Save(destinationFile);
         }
-
+        
         protected abstract void ChangeXmlFile(XmlDocument xmlDocument);
     }
 }

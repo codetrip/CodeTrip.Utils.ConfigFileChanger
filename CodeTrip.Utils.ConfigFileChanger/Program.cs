@@ -95,20 +95,20 @@ namespace CodeTrip.Utils.ConfigFileChanger
             new OptionSet()
             {
                 {"A|AllInSameFile=", v => deployCmdLineArgs.AllInSameFile = v != null},
-                {"Env=", v => deployCmdLineArgs.Environment = v},
+                {"Env=", v => deployCmdLineArgs.Environments.Add(v)},
                 {"Inst=", v => deployCmdLineArgs.InstructionsFilesLocation = v},
                 {"Config=", v => deployCmdLineArgs.ConfigFilesLocation = v},
             }.Parse(args);
 
-            if (deployCmdLineArgs.Environment == null || deployCmdLineArgs.InstructionsFilesLocation == null || deployCmdLineArgs.ConfigFilesLocation == null)
+            if (deployCmdLineArgs.Environments.Count == 0 || deployCmdLineArgs.InstructionsFilesLocation == null || deployCmdLineArgs.ConfigFilesLocation == null)
                 throw new UsageException();
 
             var stringReplacementHistory = new StringReplacementHistory();
             var parser = deployCmdLineArgs.AllInSameFile
                              ? (IInstructionParser) new AllEnvironmentsInOneFileXmlParser("*.inst",
-                                                                     deployCmdLineArgs.Environment,
+                                                                     deployCmdLineArgs.Environments.ToArray(),
                                                                      stringReplacementHistory)
-                             : new FilePerEnvironmentXmlParser(deployCmdLineArgs.Environment + ".inst");
+                             : new FilePerEnvironmentXmlParser(deployCmdLineArgs.Environments[0] + ".inst");
 
             var loader = new PerEnvironmentInstructionsSetLoader(parser.Parse(deployCmdLineArgs));
 
@@ -138,9 +138,13 @@ namespace CodeTrip.Utils.ConfigFileChanger
 
     public class DeployCmdLineArgs : ModeCmdLineArgs
     {
+        public DeployCmdLineArgs()
+        {
+            Environments = new List<string>();
+        }
         public bool AllInSameFile;
 
-        public string Environment;
+        public List<string> Environments;
 
         public string InstructionsFilesLocation;
 

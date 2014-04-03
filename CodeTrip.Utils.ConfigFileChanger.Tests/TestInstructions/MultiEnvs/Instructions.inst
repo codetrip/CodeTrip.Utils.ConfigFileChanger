@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Files>
+  <File match="test.config">
+    <Property1 dev.a="dev.a" dev.b="dev.b" theRest="defaultValue"/>
+    <Property2 dev.b="dev.b" b="allb" theRest="defaultValue"/>
+    <Property3 int="int" theRest="theRest"/>
+  </File>
+</Files>

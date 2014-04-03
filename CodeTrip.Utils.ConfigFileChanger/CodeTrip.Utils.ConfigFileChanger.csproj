@@ -72,6 +72,7 @@
     <Compile Include="FileChangeInstructionSet.cs" />
     <Compile Include="Changers\IFileChanger.cs" />
     <Compile Include="InstructionLoaders\ChangeInstruction.cs" />
+    <Compile Include="InstructionLoaders\DevBuildInstructionSetLoader.cs" />
     <Compile Include="InstructionLoaders\IFileLocator.cs" />
     <Compile Include="InstructionLoaders\IInstructionSetLoader.cs" />
     <Compile Include="InstructionParsers\IInstructionParser.cs" />

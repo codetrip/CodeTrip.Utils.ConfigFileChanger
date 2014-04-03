@@ -58,6 +58,9 @@
     <None Include="TestConfig\test.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="TestInstructions\MultiEnvs\Instructions.inst">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestInstructions\AllInSameFile\Instructions.inst">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
