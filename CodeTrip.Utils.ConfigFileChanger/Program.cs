@@ -95,7 +95,7 @@ namespace CodeTrip.Utils.ConfigFileChanger
             new OptionSet()
             {
                 {"A|AllInSameFile=", v => deployCmdLineArgs.AllInSameFile = v != null},
-                {"Env=", v => deployCmdLineArgs.Environments.Add(v)},
+                {"Env=", v => deployCmdLineArgs.Environments.AddRange(v.Split('.'))},
                 {"Inst=", v => deployCmdLineArgs.InstructionsFilesLocation = v},
                 {"Config=", v => deployCmdLineArgs.ConfigFilesLocation = v},
             }.Parse(args);
