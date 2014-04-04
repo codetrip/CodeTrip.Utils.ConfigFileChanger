@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Xml;
 using NUnit.Framework;
 
 namespace CodeTrip.Utils.ConfigFileChanger.Tests
@@ -55,6 +56,15 @@ namespace CodeTrip.Utils.ConfigFileChanger.Tests
                         @"TestConfig\test.config")))
             {
                 Console.WriteLine(sr.ReadToEnd());
+
+                var xd = new XmlDocument();
+                xd.Load(Path.Combine(Environment.CurrentDirectory,
+                    @"TestConfig\test.config"));
+
+                Assert.That(xd.SelectSingleNode("//Property1").InnerText, Is.EqualTo("dev.b"));
+                Assert.That(xd.SelectSingleNode("//Property2").InnerText, Is.EqualTo("dev.b"));
+                Assert.That(xd.SelectSingleNode("//Property3").InnerText, Is.EqualTo("dev"));
+                Assert.That(xd.SelectSingleNode("//Property4").InnerText, Is.EqualTo("theRest"));
             }
         }
 

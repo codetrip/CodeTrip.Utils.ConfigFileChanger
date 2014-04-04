@@ -3,6 +3,7 @@
   <File match="test.config">
     <Property1 dev.a="dev.a" dev.b="dev.b" theRest="defaultValue"/>
     <Property2 dev.b="dev.b" b="allb" theRest="defaultValue"/>
-    <Property3 int="int" theRest="theRest"/>
+    <Property3 dev.a="dev.a" dev="dev" theRest="theRest"/>
+    <Property4 dev.a="dev.a" int.b="int.b" theRest="theRest"/>
   </File>
 </Files>
