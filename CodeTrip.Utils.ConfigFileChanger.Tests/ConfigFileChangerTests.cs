@@ -45,7 +45,7 @@ namespace CodeTrip.Utils.ConfigFileChanger.Tests
         public void Multi_envs()
         {
             var processStartInfo = new ProcessStartInfo("CodeTrip.Utils.ConfigFileChanger.exe",
-                                                        @"/M:Deploy /Env:dev.b /A:+ /Inst:TestInstructions\MultiEnvs /Config:TestConfig /D-");
+                                                        @"/M:Deploy /Env:dev.B /A:+ /Inst:TestInstructions\MultiEnvs /Config:TestConfig /D-");
 
 
             RunProcess(processStartInfo);

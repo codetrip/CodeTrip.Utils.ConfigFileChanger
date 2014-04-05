@@ -134,10 +134,10 @@ namespace CodeTrip.Utils.ConfigFileChanger.InstructionParsers
 
             var bestMatch = envAttrs
                 .OrderBy(a => a, new EnvironmentAttributeComparer())
-                .FirstOrDefault(a => a.EnvironmentMatches.All(m => _environments.Contains(m)))
+                .FirstOrDefault(a => a.EnvironmentMatches.All(m => _environments.Contains(m, StringComparer.OrdinalIgnoreCase)))
                             ??
                             envAttrs.FirstOrDefault(
-                                a => a.EnvironmentMatches.Length == 1 && a.EnvironmentMatches[0] == "theRest");
+                                a => a.EnvironmentMatches.Length == 1 && a.EnvironmentMatches[0].Equals("theRest", StringComparison.OrdinalIgnoreCase));
 
             return bestMatch;
 
